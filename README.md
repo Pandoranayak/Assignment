@@ -66,11 +66,21 @@ Project Structure. Here's my project structure:
 │   └── partial_purchase_flow_steps.py
 ├── requirements.txt         # Python dependencies
 ├── environment.py        # Browser context and logger functionality
+├── run_test.py        
+├── behave.ini       
 └── README.md                 # This file
 ```
 
+**Debugging**
+For debugging i have added follwoing checks:
+1. Custom logger - Logging is added in every step to verify where the script is getting error.
+2. Screenshots - Screenshots will be saved for the error screen.
+3. Screenrecord - A screenrecord of every scenario will be saved.
+
 
 ## Features tested in this assignment
+
+***Part 1***
 
 **1. Feature: Partial purchase flow for the website**
 
@@ -111,6 +121,8 @@ Project Structure. Here's my project structure:
 - Validates that the item is removed from the cart
 ```
 
+***Part 2***
+
 **2. Feature: Validating menu item categories**
 
 *Scenario : Validating menu item category dropdown*
@@ -123,11 +135,73 @@ Project Structure. Here's my project structure:
 - Validates the title of the landing page
 ```
 
-**Debugging**
-For debugging i have added follwoing checks:
-1. Custom logger - Logging is added in every step to verify where the script is getting error.
-2. Screenshots - Screenshots will be saved for the error screen.
-3. Screenrecord - A screenrecord of every scenario will be saved.
+
+
+
+***Part 3***
+
+*Question : How would you go about testing performance limitations [Loading times or users
+capacity...] for such a website and how you would go about testing it [Tools,
+priorities...].*
+
+*Step-by-Step Approach*
+
+*Define Objectives:*
+
+1. Loading Times: Measure how quickly pages and elements load.
+2. User Capacity: Determine how many users the website can handle without performance degradation.
+
+Select Tools:
+
+1. JMeter: Ideal for simulating load testing across different scenarios such as peak traffic or sustained high usage.
+2. BlazeMeter: Extension for JMeter in cloud environments for scalability and detailed reporting.
+
+*Create a Test Strategy:*
+
+Determine Key Performance Indicators (KPIs):
+
+1. Response time
+2. Error rates
+
+Set Priorities:
+
+1. Test frequently accessed pages and features.
+2. Simulate realistic user behavior based on site analytics.
+
+*Design Test Scenarios:*
+
+1. Load Testing: Simulate normal expected traffic with a gradual ramp-up.
+2. Stress Testing: Push the system to its limits by increasing users until performance drops
+3. Spike Testing: Introduce sudden bursts of load to check how the system handles peak traffic.
+4. Endurance Testing: Run tests over an extended period to detect memory leaks and ensure sustained performance.
+
+*Configure JMeter Test Plan:*
+
+1. Thread Group: Define the number and behavior of simulated users.
+2. HTTP Samplers: Configure requests to the website’s endpoints.
+3. Timers: Introduce delays to simulate real user behavior.
+4. Listeners: Utilize to capture and visualize test data.
+
+*Execution and Monitoring:*
+
+1. Begin by executing the test plans using JMeter or command-line modes.
+2. Use Grafana or similar tools to monitor server health and resource usage in real-time.
+
+*Analyze Results:*
+
+1. Identify bottlenecks by analyzing response times, throughput graphs, and server metrics.
+2. Focus on any errors in requests or significant slowdowns under load.
+
+*Optimize and Retest:*
+
+1. Implement changes based on analysis, such as code optimizations or infrastructure scaling.
+2. Retest to verify improvements and continue iterating as needed.
+
+*Reporting:*
+
+1. Generate detailed reports that summarize the findings, including performance metrics, identified issues, and recommendations for optimization.
+2. Use the data gathered to inform stakeholders and guide further development or infrastructure decisions.
+
 
 
    
