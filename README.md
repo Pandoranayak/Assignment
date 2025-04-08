@@ -46,6 +46,7 @@ To run the Behave tests:
   
 ```bash
 behave
+```
 This will execute all feature files in the features/ directory.
 
 Project Structure. Here's my project structure:
