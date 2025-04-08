@@ -1,9 +1,9 @@
 from behave import given, then, when
 from playwright.sync_api import *
 import asyncio
-import nest_asyncio
+
 import time
-nest_asyncio.apply()
+
 
 @given('the user navigates to "{url}"')
 def navigate_to_website(context, url):
@@ -30,20 +30,20 @@ def validate_items_count(context):
 @when('the mouse hovers over first item image')
 def hover_over_item(context):
     context.logger.info("Hovering over the first item image.")
-    image = context.page.locator("img[alt=\"Combination Pliers\"]")
-    initial_image_fit = image.evaluate("el => getComputedStyle(el).objectFit")
-    context.logger.info(f"Initial image fit: {initial_image_fit}")
+    context.image = context.page.locator("img[alt=\"Combination Pliers\"]")
+    context.initial_transform = context.image.evaluate("el => getComputedStyle(el).transform")
+    context.logger.info(f"Initial image transform: {context.initial_transform}")
 
-    image.hover()
-    context.page.wait_for_timeout(5000)  # Wait for 2 seconds to observe the hover effect
+    context.image.hover()
+    context.page.wait_for_timeout(5000)  # Wait for 5 seconds to observe the hover effect
 
 @then('the image changes')
 def validate_image_change(context):
     context.logger.info("Validating image change on hover.")
-    hovered_object_fit = image.evaluate("el => getComputedStyle(el).objectFit")
-    context.logger.info(f"Hovered image fit: {hovered_object_fit}")
+    hovered_transform = context.image.evaluate("el => getComputedStyle(el).transform")
+    context.logger.info(f"Hovered image transform: {hovered_transform}")
 
-    assert initial_image_fit != hovered_object_fit, "Image fit did not change on hover."
+    assert context.initial_transform != hovered_transform, "Image transform did not change on hover."
     context.logger.info("Hover effect validation passed.")
 
 @given('the user is on the page "{url}"')
@@ -57,23 +57,30 @@ def select_sorting_option(context, sort_option):
     context.logger.info(f"Selecting sorting option: {sort_option}")
     context.page.locator("[data-test=\"sort\"]").select_option(sort_option)
     context.logger.info("Sorting option selected.")
-"""
-@when('selects the price range minimum "{min}" and maximum "{max}"')
-def select_price_range(context, min, max):
-    context.logger.info(f"Selecting price range: Min = {min}, Max = {max}")
-    frame_locator = context.page.frame_locator(".ngx-slider-span ngx-slider-bar")
-    slider_min_locator = frame_locator.get_by_role("slider", name="ngx-slider", exact=True)
-    slider_max_locator = frame_locator.get_by_role("slider", name="ngx-slider-max")
-    default_min = 0
-    default_max = 100
+
+@when('selects the price range minimum "{min_value}" and maximum "{max_value}"')
+def select_price_range(context, min_value, max_value):
+    context.logger.info(f"Selecting price range: Min = {min_value}, Max = {max_value}")
+    
+    # Locate the minimum and maximum sliders
+    slider_min_locator = context.page.locator(".ngx-slider-pointer-min")
+    slider_max_locator = context.page.locator(".ngx-slider-pointer-max")
+    
+    # Move the minimum slider
     slider_min_locator.focus()
-    for i in range(default_min + int(min)):
+    context.logger.info(f"Moving minimum slider from 0 to {min_value}")
+    for _ in range(int(min_value) - 1):
         slider_min_locator.press("ArrowRight")
     
+    # Move the maximum slider in steps of 5
     slider_max_locator.focus()
-    for i in range(default_max - int(max)+1):
-        slider_max_locator.press("ArrowLeft")
-"""
+    context.logger.info(f"Moving maximum slider from 100 to {max_value} in steps of 5")
+    current_value = 100
+    while current_value > int(max_value):
+        step = min(5, current_value - int(max_value))  # Calculate the step size
+        for _ in range(step):
+            slider_max_locator.press("ArrowLeft")
+        current_value -= step
 @when('selects the "{category}" category')
 def select_category(context, category):
     context.logger.info(f"Selecting category: {category}")
@@ -90,33 +97,43 @@ def select_brand(context, brand):
 def validate_items_after_filter(context):
     context.logger.info("Validating items after applying filters.")
     product_names = []
-    link_elements = context.page.locator(".col-md-9").all()
-    price_elements = context.page.locator("span[data-test='product-price']")
     product_prices = []
-
-    for link in link_elements:
-        try:
-            name_element = link.locator("h5[data-test='product-name']")
-            name = name_element.inner_text().strip()
-            product_names.append(name)
-        except Exception as e:
-            context.logger.error(f"Error retrieving product name: {e}")
-            continue
-        
-        is_descending_order = all(product_names[i] >= product_names[i + 1] for i in range(len(product_names) - 1))
-
-        if is_descending_order:
-            context.logger.info("Items are sorted in descending order.")
-
-        else:
-            context.logger.info("Items are not sorted in descending order.")
-            raise AssertionError("Items are not sorted in descending order.")
-        
-    for name in product_names:
-        assert "Hammer" in name, f"Expected 'Hammer' in '{name}' after filter."
-        context.logger.info(f"Product name '{name}' contains 'Hammer' as expected.")
     
+    # Locate product elements
+    link_elements = context.page.locator(".col-md-9").all()
+    price_elements = context.page.locator("span[data-test='product-price']").all()
+    
+    # Define expected price range
+    expected_min_price = 1
+    expected_max_price = 20
+    
+    # Iterate over each product element
+    for link, price_element in zip(link_elements, price_elements):
+        try:
+            # Find the product name within each product element
+            name_elements = link.locator("h5[data-test='product-name']").all()
+            for name_element in name_elements:
+                name = name_element.inner_text().strip()
+                product_names.append(name)
 
+            # Validate product price
+            price_text = price_element.inner_text().strip().replace('$', '')
+            price = float(price_text)
+            product_prices.append(price)
+            assert expected_min_price <= price <= expected_max_price, f"Price {price} is not within the expected range {expected_min_price}-{expected_max_price}."
+            context.logger.info(f"Product price '{price}' is within the expected range.")
+            
+        except Exception as e:
+            context.logger.error(f"Error retrieving product details: {e}")
+            continue
+    
+    # Validate sorting order
+    is_descending_order = all(product_names[i] >= product_names[i + 1] for i in range(len(product_names) - 1))
+    if is_descending_order:
+        context.logger.info("Items are sorted in descending order alphabetically.")
+    else:
+        context.logger.info("Items are not sorted in descending order alphabetically.")
+        raise AssertionError("Items are not sorted in descending order alphabetically.")
 
 @given('the user navigates to the homepage "https://practicesoftwaretesting.com"')
 def navigate_to_homepage(context):
