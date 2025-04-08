@@ -4,7 +4,7 @@ This assignment demonstrates the use of Playwright for browser automation, Pytho
 
 ## Overview
 
-This assignment [briefly describe the purpose of your assignment - e.g., automates user interactions on a specific website, tests a particular web application feature].  It uses Playwright to control web browsers, Python to drive the automation, and Behave to structure the tests in a clear, readable format.
+This assignment is as per the guidelines specified.
 
 ## Technologies Used
 
@@ -45,6 +45,15 @@ To run the Behave tests:
 ```bash
 behave
 ```
+
+To run the tests with report generation:
+
+* Run the below command in the project root directory
+  
+```bash
+python run_tests.py
+```
+
 This will execute all feature files in the features/ directory.
 
 ```bash
