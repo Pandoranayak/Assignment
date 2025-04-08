@@ -31,7 +31,9 @@ Follow these steps to set up the project:
 3.  **Activate the virtual environment in the project**
     As there is a virtual environment inside the project path, there is no need to install dependencies
 
-    ```source bin/activate
+    * Open a terminal in the project root and enter the following command(For MAC):
+    ```bash
+    source bin/activate
     ```
 
     * Create a `requirements.txt` file in the project root.  It should contain:
