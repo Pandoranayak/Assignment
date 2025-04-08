@@ -49,6 +49,7 @@ behave
 ```
 This will execute all feature files in the features/ directory.
 
+```bash
 Project Structure. Here's my project structure:
 ├── features/
 │   ├── menu_item_validation.feature     # Feature files in Gherkin
