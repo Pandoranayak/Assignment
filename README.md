@@ -58,14 +58,61 @@ Project Structure. Here's my project structure:
 ├── requirements.txt         # Python dependencies
 ├── environment.py        # Browser context and logger functionality
 └── README.md                 # This file
+```
 
 
-features/: Contains feature files written in Gherkin (e.g., my_feature.feature).  These describe the behavior of the system.steps/: Contains Python files (e.g., steps.py) that define the actions to take for each Gherkin step.pages/
+## Features tested in this assignment
 
- Example (my_feature.feature)Feature: User Login
-  Scenario: Successful login
-    Given the user is on the login page
-    When the user enters valid credentials
-    And the user clicks the login button
-    Then the user should be logged in
+**1. Feature: Partial purchase flow for the website**
+
+*Scenario 1: Open the website and validate the title and number of items in the page*
+```text
+- Open the URL
+- Title is validated
+- Number of items in the page is validated
+- Mouse hover over the image
+- Validates that the hover changes the image
+```
+*Scenario 2: Validate the items in the page after putting certain filters*
+```text
+- Open the URL
+- User selects the sorting order
+- User selects the price range (Drags the min and max value)
+- User selects the category checkbox
+- User selects the brand checkbox
+- Validates that the items in the page after the filters are as per the conditions set by the filters
+```
+*Scenario 3: Validate the purchase flow when checking out a item*
+```text
+- Open the URL
+- User clicks on a item
+- User can navigate to the selected item page
+- Validates that the item page information for the product matches the homepage
+- User clicks on "+" button to increase the quantity
+- Validates that the item quantity is increased by 1
+- User clicks on "Add to cart button"
+- Validates Item is added to cart and green notification is visible
+- Validates the API call
+- User clicks on "View cart" button
+- Validate that the user is naviagted to the cart page
+- User clicks on "Checkout" button
+- Validates that the user is redirected to the sign in page
+- User clicks on cart icon
+- User clicks on the "x" button
+- Validates that the item is removed from the cart
+```
+
+**2. Feature: Validating menu item categories**
+
+*Scenario : Validating menu item category dropdown*
+```text
+- Open the URL
+- User clicks on category
+- Validating the items in the dropdown and the order of the items
+- User clicks on one of the category
+- Validated that the user is redirected to the selected category page and the url contains the category
+- Validates the title of the landing page
+```
+
+   
 
