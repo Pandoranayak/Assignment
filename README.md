@@ -20,7 +20,6 @@ Follow these steps to set up the project:
 
     * **Python:** Ensure Python 3.7 or later is installed.  Download from [https://www.python.org/downloads/](https://www.python.org/downloads/).
     * **pip:** Python's package installer (usually included with Python).
-    * **Node.js:** Playwright requires Node.js. Download from [https://nodejs.org/](https://nodejs.org/).
 
 2.  **Clone the Repository:**
 
@@ -29,10 +28,10 @@ Follow these steps to set up the project:
     cd [your-repository-name]
     ```
 
-3.  **Install Python Dependencies:**
+3.  **Activate the virtual environment in the project**
+    As there is a virtual environment inside the project path, there is no need to install dependencies
 
-    ```bash
-    pip install -r requirements.txt
+    ```source bin/activate
     ```
 
     * Create a `requirements.txt` file in the project root.  It should contain:
@@ -43,7 +42,7 @@ Follow these steps to set up the project:
         ```
         (and any other Python packages you use).
 
-4.  **Install Playwright Browsers:**
+5.  **Install Playwright Browsers:**
 
     ```bash
     playwright install
