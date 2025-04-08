@@ -24,12 +24,10 @@ Follow these steps to set up the project:
 2.  **Clone the Repository:**
 
     ```bash
-    git clone [your-repository-url]
-    cd [your-repository-name]
+    git clone https://github.com/Pandoranayak/Assignment.git
     ```
 
 3.  **Activate the virtual environment in the project**
-    As there is a virtual environment inside the project path, there is no need to install dependencies
 
     * Open a terminal in the project root and enter the following command:
     ```bash
@@ -115,6 +113,13 @@ Project Structure. Here's my project structure:
 - Validated that the user is redirected to the selected category page and the url contains the category
 - Validates the title of the landing page
 ```
+
+**Debugging**
+For debugging i have added follwoing checks:
+1. Custom logger - Logging is added in every step to verify where the script is getting error.
+2. Screenshots - Screenshots will be saved for the error screen.
+3. Screenrecord - A screenrecord of every scenario will be saved.
+
 
    
 
