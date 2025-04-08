@@ -21,7 +21,7 @@ def setup_logger(name, log_file, level=logging.INFO):
 
 def before_scenario(context, scenario):
     context.playwright = sync_playwright().start()
-    context.browser = context.playwright.chromium.launch(headless=False, slow_mo=1000)
+    context.browser = context.playwright.chromium.launch(headless=True)
     context.page = context.browser.new_page(record_video_dir=VIDEO_DIR) # Removed record_video_size for now
 
     os.makedirs(LOG_DIR, exist_ok=True)
